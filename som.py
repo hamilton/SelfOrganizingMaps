@@ -146,7 +146,6 @@ if __name__ == "__main__":
 	#		
 	for i, v1 in enumerate(som.map):
 		for j, v2 in enumerate(som.map):
-			
 			if (v2[0] == v1[0] + 1 and v2[1] == v1[1]) or \
 				(v2[1] == v1[1] + 1 and v2[0] == v1[0]):
 				# get prototype equivalents for i and j,
