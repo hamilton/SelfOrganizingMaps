@@ -2,18 +2,37 @@ SelfOrganizingMap v0.1
 ======================================================================
 http://en.wikipedia.org/wiki/Self-organizing_map
 ======================================================================
-
+FROM WIKIPEDIA:
 A self-organizing map (SOM) or self-organizing feature map (SOFM) is a type of artificial neural network that is trained using unsupervised learning to produce a low-dimensional (typically two-dimensional), discretized representation of the input space of the training samples, called a map. Self-organizing maps are different from other artificial neural networks in the sense that they use a neighborhood function to preserve the topological  properties of the input space.
 
 This makes SOM useful for visualizing low-dimensional views of high-dimensional data, akin to multidimensional scaling. The model was first described as an artificial neural network by the Finnish professor Teuvo Kohonen, and is sometimes called a Kohonen map.
 
 -----------------------------------------------------------------------
 
-This library implements the online version of the self-organizing map.
+Realistically, SOMs are a form of k-means clustering, where the prototypes are constrained to live and play in a two dimensional grid, or map.  They have one big advantage - they achieve a very nice dimensionality reduction, especially suited for visualizing the relationships between the points.  Because they do this nonlinearly, they have in some circumstances an edge over linear projection methods. 
+
+This library implements the online version of the self-organizing map.  It's only dependency is the SciPy / NumPy pack.
+
 Thus far I've only confirmed that the algorithm works with a fixed data set.
+
+v0.4
+- improve NN search algorithms for BMUs
+
+v0.3
+- get json output working for use with protovis or processing
+- get matplotlib grids working
+
+v0.2
+- implement the hexagonal grid
+- finish the batch learning version
+
+v0.1 (current) 
+- implement the online algorithm
+- verify with some tests that algorithm fits the map
+
 
 todo:
 - implement batch learning
 - implement better online learning
 - create appropriate map visualizations
-- output results in json format for use with something like protovis
+- output results in json format for use with something like protovis (perhaps a separate project altogether)

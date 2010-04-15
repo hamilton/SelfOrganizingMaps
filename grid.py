@@ -32,9 +32,12 @@ def hexagonal_grid(width, height):
 	a two dimensional Euclidean space, organized
 	in a hexagonal grid.
 	
+	This does not work as expected, yet.
 	"""
 	grid = np.zeros([width*height, 2])
 	i = 0
+	current_x = 0
+	
 	yset = False
 	for y in range(height):
 		for x in range(width):

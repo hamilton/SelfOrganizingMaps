@@ -2,7 +2,7 @@ from math import log
 import numpy as np
 from distance import euclidean
 import sys
-from grid import square_grid
+from grid import square_grid, hexagonal_grid
 from kernel import radial_kernel
 
 from mpl_toolkits.mplot3d import Axes3D
@@ -126,12 +126,12 @@ if __name__ == "__main__":
 		np.random.normal(1,1,1000),
 		np.random.normal(1,1,1000)
 	]))
-	data = np.vstack([class_a, class_b])
-	# data = np.transpose(np.matrix([
-	# 		np.random.uniform(0,5,2000),
-	# 		np.random.uniform(0,5,2000),
-	# 		np.random.uniform(0,.0001,2000)
-	# 	]))
+	#data = np.vstack([class_a, class_b])
+	data = np.transpose(np.matrix([
+	 		np.random.uniform(0,5,2000),
+	 		np.random.uniform(0,5,2000),
+	 		np.random.uniform(0,.0001,2000)
+	 	]))
 	# verify data with 3d matplotlib scatterplot fcn.
 	som = SelfOrganizingMap(3, 20, 30)
 	som.train_dataset_v01(data)
