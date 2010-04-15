@@ -12,17 +12,22 @@ class SelfOrganizingMap(object):
 	"""Self-Organizing Map
 	
 	"""
-	def __init__(self, p, width, height):
+	def __init__(self, p, width, height, grid_type = square_grid, distance = euclidean):
 		"""
 		p is an integer, defining the expected dimension of our future data.
 		width is an integer, defining the width of the cell map.
 		height is an integer, defining the height of the cell map."""
+		
+		self.distance = distance
+		
 		self.p = p
 		self.width = width
 		self.height = height
 		self.prototype_vector = np.zeros([width*height, p])
 		
-		self.map = square_grid(width, height)
+		self.map = grid_type(width, height)
+		
+		self.grid_type = grid_type
 		
 		self.ymax_ind = width - 1
 		self.xmax_ind = height - 1
@@ -31,12 +36,12 @@ class SelfOrganizingMap(object):
 		self._initialized_prototypes = 0
 		self._total_prototypes = width * height
 		
-		self._base_neighborhood = max(width, height) / 2.0
+		self._base_neighborhood = max(max(self.map[:,0]), max(self.map[:,1])) / 2.0
 	
 	def online_train(self, data):
 		pass
 	
-	def train_dataset_v01(self, data, distance = euclidean):
+	def train_dataset_v01(self, data):
 		"""
 		v0.1 - trains on """
 		
@@ -48,7 +53,7 @@ class SelfOrganizingMap(object):
 		# Initialize by taking random data points. #
 		############################################
 		
-		sample = np.random.permutation(range(n))[0:(self.width * self.height)]
+		sample = np.random.permutation(range(n))[0:(self._total_prototypes)]
 		# set the various prototype vectors to these.
 		for p, i in enumerate(sample):
 			self.prototype_vector[p,:] = data[i,:]
@@ -78,29 +83,19 @@ class SelfOrganizingMap(object):
 				self.prototype_vector[neighbor,:] = m_i + alpha * (x_i - m_i)
 			# increment bookmarks.
 			t += 1
-			alpha -= 1 / float(iterations)
-		
-		# fig = plt.figure()
-		# 		ax = Axes3D(fig)
-		# 		ax.scatter(self.prototype_vector[:,0],self.prototype_vector[:,1], self.prototype_vector[:,2])
-		# 		
-		# 		#a = self.map[0:1,:]
-		# 		a = self.prototype_vector[0:1,:]
-		# 		ax.plot(a[:,0], a[:,1], a[:,2])
-		# 		
-		# 		plt.show()   
+			alpha -= 1 / float(iterations)  
 	
-	def find_BMU(self, v, distance = euclidean):
+	def find_BMU(self, v):
 		closest_prototype = -1
 		closest_distance = -1
 		for i, pv in enumerate(self.prototype_vector):
-			dist = distance(v, pv)
+			dist = self.distance(v, pv)
 			if dist < closest_distance or closest_distance == -1:
 				closest_distance = dist
 				closest_prototype = i
 		return closest_prototype
 	
-	def get_neighbors(self, i, t, distance = euclidean):
+	def get_neighbors(self, i, t):
 		## hard-code the neighborhood kernel, for now :*(
 		# calculate the expected radius of our maps.
 		l = self.iterations / log(self._base_neighborhood)
@@ -109,9 +104,32 @@ class SelfOrganizingMap(object):
 		neighbors = []
 		for j, v in enumerate(self.map):
 			v = np.array(v)
-			if distance(v, bmu) <= neighborhood_radius and j != i:
+			if self.distance(v, bmu) <= neighborhood_radius and j != i:
 				neighbors.append(j)
 		return neighbors
+	
+	def preview_3d_data_and_map(self, data):
+		"""This is for demo purposes only.
+		Demonstrates the self organizing map embedded on its
+		corresponding prototype vectors in R^3."""
+		fig = plt.figure()
+		ax = Axes3D(fig)
+		ax.scatter(data[:,0], data[:,1], data[:,2], color="#666666")
+		ax.scatter(self.prototype_vector[:,0], self.prototype_vector[:,1], self.prototype_vector[:,2])
+		# 
+		# The following code is a bit boilerplate, but it does the job.
+		# 
+		for i, v1 in enumerate(self.map):
+			for j, v2 in enumerate(self.map):
+				if    ((v2[0] >= v1[0] and v2[1] >= v1[1]) or \
+				      (v2[0] > v1[0] and v2[1] < v1[1])) and \
+						self.distance(v2,v1) <= 1.03:
+					p1 = self.prototype_vector[i,:]
+					p2 = self.prototype_vector[j,:]
+					p = np.vstack([p1, p2])
+					ax.plot(list(p[:,0]), list(p[:,1]), list(p[:,2]), linewidth=1, color='k')
+		
+		plt.show()
 	
 
 if __name__ == "__main__":
@@ -126,32 +144,14 @@ if __name__ == "__main__":
 		np.random.normal(1,1,1000),
 		np.random.normal(1,1,1000)
 	]))
-	data = np.vstack([class_a, class_b])
-	# data = np.transpose(np.matrix([
-	# 	 		np.random.uniform(0,5,2000),
-	# 	 		np.random.uniform(0,5,2000),
-	# 	 		np.random.uniform(0,.0001,2000)
-	# 	 	]))
+	#data = np.vstack([class_a, class_b])
+	data = np.transpose(np.matrix([
+	 	 		np.random.uniform(0,5,2000),
+	 	 		np.random.uniform(0,5,2000),
+	 	 		np.random.uniform(0,.0001,2000)
+	 	 	]))
 	# verify data with 3d matplotlib scatterplot fcn.
-	som = SelfOrganizingMap(3, 40, 10)
+	som = SelfOrganizingMap(3, 30, 30, grid_type=hexagonal_grid)
 	som.train_dataset_v01(data)
+	som.preview_3d_data_and_map(data)
 	
-	fig = plt.figure()
-	ax = Axes3D(fig)
-	ax.scatter(data[:,0], data[:,1], data[:,2], color="#666666")
-	ax.scatter(som.prototype_vector[:,0], som.prototype_vector[:,1], som.prototype_vector[:,2])
-	
-	#for i in range(width):
-	#	for j in range(height):
-	#		
-	for i, v1 in enumerate(som.map):
-		for j, v2 in enumerate(som.map):
-			if (v2[0] == v1[0] + 1 and v2[1] == v1[1]) or \
-				(v2[1] == v1[1] + 1 and v2[0] == v1[0]):
-				# get prototype equivalents for i and j,
-				p1 = som.prototype_vector[i,:]
-				p2 = som.prototype_vector[j,:]
-				p = np.vstack([p1, p2])
-				ax.plot(list(p[:,0]), list(p[:,1]), list(p[:,2]), linewidth=1, color='k')
-	
-	plt.show()

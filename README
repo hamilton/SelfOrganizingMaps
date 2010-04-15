@@ -23,12 +23,13 @@ v0.3
 - get matplotlib grids working
 
 v0.2
-- implement the hexagonal grid
+- generalize to any distance function - DONE
+- implement the hexagonal grid - DONE
 - finish the batch learning version
 
 v0.1 (current) 
-- implement the online algorithm
-- verify with some tests that algorithm fits the map
+- implement the online algorithm - DONE
+- verify with some tests that algorithm fits the map - DONE
 
 
 todo:
