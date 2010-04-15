@@ -36,18 +36,21 @@ def hexagonal_grid(width, height):
 	"""
 	grid = np.zeros([width*height, 2])
 	i = 0
-	current_x = 0
-	
+	x_offset = 0.8660254
 	yset = False
-	for y in range(height):
-		for x in range(width):
-			grid[i,0] = x
-			grid[i,1] = y if yset else y + .5
+	for x in range(width):
+		for y in range(height):
+			grid[i, 0] = x * x_offset
+			grid[i, 1] = y if not yset else y +.5
+			i += 1
 		if not yset: yset = True
 		else: yset = False
+	
 	return grid
 	
 
 if __name__ == "__main__":
 	a = square_grid(4,4)
+	print a 
+	a = hexagonal_grid(4,4)
 	print a

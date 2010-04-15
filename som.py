@@ -66,7 +66,7 @@ class SelfOrganizingMap(object):
 			# get data point, initialize local variables.
 			x_i = np.array(data[i,:])[0] # the [0] turns this into a 1d array.
 			
-			# find nearest prototype. Returns int index.
+			# find nearest prototype to x_i. Return int index.
 			best_matching_unit = self.find_BMU(x_i)
 			
 			# get the prototype's neighbors. returns list of int indices.
@@ -126,14 +126,14 @@ if __name__ == "__main__":
 		np.random.normal(1,1,1000),
 		np.random.normal(1,1,1000)
 	]))
-	#data = np.vstack([class_a, class_b])
-	data = np.transpose(np.matrix([
-	 		np.random.uniform(0,5,2000),
-	 		np.random.uniform(0,5,2000),
-	 		np.random.uniform(0,.0001,2000)
-	 	]))
+	data = np.vstack([class_a, class_b])
+	# data = np.transpose(np.matrix([
+	# 	 		np.random.uniform(0,5,2000),
+	# 	 		np.random.uniform(0,5,2000),
+	# 	 		np.random.uniform(0,.0001,2000)
+	# 	 	]))
 	# verify data with 3d matplotlib scatterplot fcn.
-	som = SelfOrganizingMap(3, 20, 30)
+	som = SelfOrganizingMap(3, 40, 10)
 	som.train_dataset_v01(data)
 	
 	fig = plt.figure()
