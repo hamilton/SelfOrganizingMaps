@@ -1,0 +1,20 @@
+SelfOrganizingMap v0.1
+======================================================================
+http://en.wikipedia.org/wiki/Self-organizing_map
+======================================================================
+
+A self-organizing map (SOM) or self-organizing feature map (SOFM) is a type of artificial neural network that is trained using unsupervised learning to produce a low-dimensional (typically two-dimensional), discretized representation of the input space of the training samples, called a map. Self-organizing maps are different from other artificial neural networks in the sense that they use a neighborhood function to preserve the topological  properties of the input space.
+A self-organizing map showing US Congress voting patterns visualized in Synapse. The first two boxes show clustering and distances while the remaining ones show the component planes. Red means a yes vote while blue means a no vote in the component planes (except the party component where red is Republican and blue is Democrat).
+
+This makes SOM useful for visualizing low-dimensional views of high-dimensional data, akin to multidimensional scaling. The model was first described as an artificial neural network by the Finnish professor Teuvo Kohonen, and is sometimes called a Kohonen map.
+
+-----------------------------------------------------------------------
+
+This library implements the online version of the self-organizing map.
+Thus far I've only confirmed that the algorithm works with a fixed data set.
+
+todo:
+- implement batch learning
+- implement better online learning
+- create appropriate map visualizations
+- output results in json format for use with something like protovis
