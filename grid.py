@@ -18,8 +18,8 @@ def square_grid(width, height):
 	"""
 	grid = np.zeros([width*height, 2])
 	i = 0
-	for y in range(height):
-		for x in range(width):
+	for x in range(width):
+		for y in range(height):
 			grid[i,0] = x# x coord.
 			grid[i,1] = y# y coord.
 			i += 1

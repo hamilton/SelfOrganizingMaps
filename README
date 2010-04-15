@@ -13,10 +13,10 @@ Realistically, SOMs are a form of k-means clustering, where the prototypes are c
 
 This library implements the online version of the self-organizing map.  It's only dependency is the SciPy / NumPy pack.
 
-Thus far I've only confirmed that the algorithm works with a fixed data set.
-
 v0.4
 - improve NN search algorithms for BMUs
+- fine-tune the alpha and neighborhood functions in the prototype shift step.
+- make online learning algorithm a bit more flexible
 
 v0.3
 - get json output working for use with protovis or processing

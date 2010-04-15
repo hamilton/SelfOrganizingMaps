@@ -17,6 +17,7 @@ class SelfOrganizingMap(object):
 		p is an integer, defining the expected dimension of our future data.
 		width is an integer, defining the width of the cell map.
 		height is an integer, defining the height of the cell map."""
+		self.alpha = 1
 		
 		self.distance = distance
 		
@@ -63,7 +64,6 @@ class SelfOrganizingMap(object):
 		data_points = np.random.permutation(range(n))
 		iterations = len(data_points)
 		self.iterations = iterations
-		alpha = 1
 		
 		t = 0
 		
@@ -80,10 +80,10 @@ class SelfOrganizingMap(object):
 			# move all prototype neighbors toward this point.
 			for neighbor in prototype_neighbors:
 				m_i = self.prototype_vector[neighbor,:]
-				self.prototype_vector[neighbor,:] = m_i + alpha * (x_i - m_i)
+				self.prototype_vector[neighbor,:] = m_i + self.alpha * (x_i - m_i)
 			# increment bookmarks.
 			t += 1
-			alpha -= 1 / float(iterations)  
+			self.alpha -= 1 / float(iterations)  
 	
 	def find_BMU(self, v):
 		closest_prototype = -1
@@ -132,8 +132,7 @@ class SelfOrganizingMap(object):
 		plt.show()
 	
 
-if __name__ == "__main__":
-	
+def main():
 	class_a = np.transpose(np.matrix([
 		np.random.normal(4,1,1000),
 		np.random.normal(4,1,1000),
@@ -146,12 +145,15 @@ if __name__ == "__main__":
 	]))
 	#data = np.vstack([class_a, class_b])
 	data = np.transpose(np.matrix([
-	 	 		np.random.uniform(0,5,2000),
-	 	 		np.random.uniform(0,5,2000),
-	 	 		np.random.uniform(0,.0001,2000)
-	 	 	]))
+	 	 	 		np.random.uniform(0,5,4000),
+	 	 	 		np.random.uniform(0,5,4000),
+	 	 	 		np.random.uniform(0,.0001,4000)
+	 	 	 	]))
 	# verify data with 3d matplotlib scatterplot fcn.
-	som = SelfOrganizingMap(3, 30, 30, grid_type=hexagonal_grid)
+	som = SelfOrganizingMap(3, 10, 10)#, grid_type=hexagonal_grid)
 	som.train_dataset_v01(data)
 	som.preview_3d_data_and_map(data)
+
+if __name__ == "__main__":
+	main()
 	
