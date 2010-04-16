@@ -20,8 +20,8 @@ def square_grid(width, height):
 	i = 0
 	for x in range(width):
 		for y in range(height):
-			grid[i,0] = x# x coord.
-			grid[i,1] = y# y coord.
+			grid[i,0] = x
+			grid[i,1] = y
 			i += 1
 	return grid
 
@@ -36,7 +36,7 @@ def hexagonal_grid(width, height):
 	"""
 	grid = np.zeros([width*height, 2])
 	i = 0
-	x_offset = 0.8660254
+	x_offset = 0.8660254# pythagorean theorem for hex offset.
 	yset = False
 	for x in range(width):
 		for y in range(height):
@@ -45,7 +45,6 @@ def hexagonal_grid(width, height):
 			i += 1
 		if not yset: yset = True
 		else: yset = False
-	
 	return grid
 	
 

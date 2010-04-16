@@ -54,6 +54,23 @@ class SelfOrganizingMap(object):
 		if p != self.p: 
 			raise ValueError, "data dimensions do not match what you specified in the constructor."
 		
+		n_proto, p_proto = self.prototype_vector.shape
+		if self._initialized_prototypes < n_proto:
+			"""
+			
+			TO IMPLEMENT:
+			
+			While there is still data left in the data var,
+				initialize a prototype with the data.
+			if we have not sufficiently initialized everyone,
+				store data somehow until we can start training in earnest.
+				call it self.data_backlog = {timestamp: matrix, timestamp2: matrix2, ... }
+			The moment all the prototypes have been initialized,
+				clear the backlog first.
+				then keep training on the other data.
+			"""
+			pass
+		
 		############################################
 		# Initialize by taking random data points. #
 		############################################

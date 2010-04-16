@@ -26,6 +26,7 @@ v0.2
 - generalize to any distance function - DONE
 - implement the hexagonal grid - DONE
 - finish the batch learning version
+- reimplement the alpha function to work better in online learning.
 
 v0.1 (current) 
 - implement the online algorithm - DONE
