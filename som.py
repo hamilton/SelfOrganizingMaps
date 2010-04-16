@@ -9,7 +9,11 @@ from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 
 class SelfOrganizingMap(object):
-	"""Self-Organizing Map
+	"""Self-Organizing Map (SOM)
+	
+	Class that encapsulates the following data:
+	1. the trained, high-dimension prototypes
+	2. their corresponding grid structure.
 	
 	"""
 	def __init__(self, p, width, height, grid_type = square_grid, distance = euclidean):
@@ -127,30 +131,77 @@ class SelfOrganizingMap(object):
 					p1 = self.prototype_vector[i,:]
 					p2 = self.prototype_vector[j,:]
 					p = np.vstack([p1, p2])
-					ax.plot(list(p[:,0]), list(p[:,1]), list(p[:,2]), linewidth=1, color='k')
+					ax.plot(list(p[:,0]), list(p[:,1]), list(p[:,2]), linewidth=2, color='k', alpha=.7)
 		
+		nn_vec = self.calculate_nearest_prototypes(data)
+		n, p = data.shape
+		for i in range(n):
+			v = np.array(data[i,:])[0]
+			m = np.array(self.prototype_vector[nn_vec[i],:])
+			vs = np.vstack([v, m])
+			ax.plot(list(vs[:,0]),list(vs[:,1]),list(vs[:,2]), linewidth=.5, color='#333333', alpha=.3)
 		plt.show()
 	
+	def calculate_nearest_prototypes(self, data):
+		n, p = data.shape
+		
+		nn_vec = np.zeros(n)
+		
+		for i in range(n):
+			v = np.array(data[i,:])[0]
+			bmu_i = self.find_BMU(v)
+			nn_vec[i] = bmu_i
+		return nn_vec
+	
+	def plot_SOM(self):
+		"""
+		TODO:
+		1. read literature on expressing maps.
+		2. work out particulars for each grid type.
+		3. 
+		"""
+		pass
+	
+	def format_SOM(self, format="json"):
+		"""
+		TODO:
+		1. implement the json formatting necessary for displaying
+		the SOM using protovis or processing.js.
+		2. implement csv functionality.
+		"""
+		pass
 
-def main():
+def uniform_test_data():
+	data = np.transpose(np.matrix([
+	 	 	 		np.random.uniform(0,5,1000),
+	 	 	 		np.random.uniform(0,5,1000),
+	 	 	 		np.random.uniform(0,.0001,1000)
+	 	 	 	]))
+	return data
+
+def spheres_data():
 	class_a = np.transpose(np.matrix([
-		np.random.normal(4,1,1000),
-		np.random.normal(4,1,1000),
-		np.random.normal(4,1,1000)
+		np.random.normal(10,1,1000),
+		np.random.normal(0,1,1000),
+		np.random.normal(10,1,1000)
 	]))
 	class_b = np.transpose(np.matrix([
+		np.random.normal(5,1,1000),
+		np.random.normal(5,1,1000),
+		np.random.normal(5,1,1000)
+	]))
+	class_c = np.transpose(np.matrix([
 		np.random.normal(1,1,1000),
 		np.random.normal(1,1,1000),
 		np.random.normal(1,1,1000)
 	]))
-	#data = np.vstack([class_a, class_b])
-	data = np.transpose(np.matrix([
-	 	 	 		np.random.uniform(0,5,4000),
-	 	 	 		np.random.uniform(0,5,4000),
-	 	 	 		np.random.uniform(0,.0001,4000)
-	 	 	 	]))
+	data = np.vstack([class_a, class_b, class_c])
+	return data
+
+def main():
+	data = spheres_data()
 	# verify data with 3d matplotlib scatterplot fcn.
-	som = SelfOrganizingMap(3, 10, 10)#, grid_type=hexagonal_grid)
+	som = SelfOrganizingMap(3, 13, 10)#, grid_type=hexagonal_grid)
 	som.train_dataset_v01(data)
 	som.preview_3d_data_and_map(data)
 
