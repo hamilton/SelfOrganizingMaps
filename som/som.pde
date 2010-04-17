@@ -2,15 +2,17 @@ final int BG_COLOR = 255;
 final int LEFT_MARGIN = 50;
 final int TOP_MARGIN = 50;
 
+int hover_time = 0;
+
 void draw_hexagon(int x, int y, int circumdiameter, boolean hover) {
 	float R = float(circumdiameter) / 2.0;
 	float r = R * sqrt(3.0) / 2.0;
-	stroke(100);
+	stroke(255);
 	if (hover) {
-		fill(100);
+		fill(180);
 	} 
 	else {
-		fill(255);
+		//fill(235);
 	}
 	beginShape();
 	vertex(x, y + r);
@@ -54,6 +56,7 @@ void draw_hexagonal_grid(int width, int height, int circumdiameter) {
 	double ir = sqrt(3.0) * cr / 2.0;
 	for (int i=0; i < width; i++) {
 		for (int j=0; j < height; j++) {
+			fill(i*j, i*j - i, j-i);
 			double offset = ir;
 			if (i % 2 == 0) {
 				offset = 0.0;
@@ -80,6 +83,6 @@ void setup() {
 
 void draw() {
 	background(BG_COLOR);
-	//draw_hexagonal_grid(20,10,20);
-	draw_square_grid(20,10,25);
+	draw_hexagonal_grid(20,10,20);
+	//draw_square_grid(20,10,25);
 }

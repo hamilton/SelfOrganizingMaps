@@ -20,7 +20,7 @@ v0.4
 
 v0.3
 - get json output working for use with protovis or processing
-- get matplotlib grids working
+- get processing prototypes finished - DONE
 
 v0.2
 - generalize to any distance function - DONE
