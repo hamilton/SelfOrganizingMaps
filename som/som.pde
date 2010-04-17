@@ -22,11 +22,38 @@ void draw_hexagon(int x, int y, int circumdiameter, boolean hover) {
 	endShape(CLOSE);
 }
 
+void draw_square(int x, int y, int sq_width, boolean hover) {
+	if (hover) {
+		fill(100);
+	}
+	else {
+		fill(255);
+	}
+	rect(x, y, sq_width, sq_width);
+}
+
+void draw_square_grid(int width, int height, int sq_width) {
+	for (int i=0; i < width; i++) {
+		for (int j=0; j < height; j++) {
+			int x = LEFT_MARGIN + i * sq_width;
+			int y = TOP_MARGIN + j * sq_width;
+			int next_x = LEFT_MARGIN + (i + 1) * sq_width;
+			int next_y = TOP_MARGIN + (j + 1) * sq_width;
+			boolean fill_ = false;
+			if (mouseX > x && mouseY > y && mouseX < next_x && mouseY < next_y ) {
+				fill_ = true;
+				fill(0);
+			}
+			draw_square(x, y, sq_width, fill_);
+		}
+	}
+}
+
 void draw_hexagonal_grid(int width, int height, int circumdiameter) {
 	double cr = (double)circumdiameter;
 	double ir = sqrt(3.0) * cr / 2.0;
 	for (int i=0; i < width; i++) {
-		for (int j=0; j < height; j ++) {
+		for (int j=0; j < height; j++) {
 			double offset = ir;
 			if (i % 2 == 0) {
 				offset = 0.0;
@@ -53,5 +80,6 @@ void setup() {
 
 void draw() {
 	background(BG_COLOR);
-	draw_hexagonal_grid(20,10,20);
+	//draw_hexagonal_grid(20,10,20);
+	draw_square_grid(20,10,25);
 }
