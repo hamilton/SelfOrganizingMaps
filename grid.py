@@ -46,7 +46,8 @@ def hexagonal_grid(width, height):
 		if not yset: yset = True
 		else: yset = False
 	return grid
-	
+
+
 
 if __name__ == "__main__":
 	a = square_grid(4,4)

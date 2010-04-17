@@ -148,7 +148,7 @@ class SelfOrganizingMap(object):
 					p1 = self.prototype_vector[i,:]
 					p2 = self.prototype_vector[j,:]
 					p = np.vstack([p1, p2])
-					ax.plot(list(p[:,0]), list(p[:,1]), list(p[:,2]), linewidth=2, color='k', alpha=.7)
+					ax.plot(list(p[:,0]), list(p[:,1]), list(p[:,2]), linewidth=1.5, color='k', alpha=.7)
 		
 		nn_vec = self.calculate_nearest_prototypes(data)
 		n, p = data.shape
@@ -215,10 +215,29 @@ def spheres_data():
 	data = np.vstack([class_a, class_b, class_c])
 	return data
 
+def curve_data():
+	data = np.transpose(np.matrix([
+		np.random.normal(0,1,20000),
+		np.random.normal(0,1,20000),
+		np.random.normal(0,1,20000)
+	]))
+	indices = []
+	n, p = data.shape
+	for i in range(n):
+		if (euclidean(np.array(data[i,:])[0], np.array([0,0,0])) > .5) and \
+		   (data[i,0] > 0 and data[i,1] > 1):
+			indices.append(i)
+	new_data = np.zeros([len(indices), 3])
+	for i, j in enumerate(indices):
+		new_data[i,:] = data[j,:]
+	new_data = np.matrix(new_data)
+	return new_data
+
 def main():
-	data = spheres_data()
+	#data = spheres_data()
+	data = curve_data()
 	# verify data with 3d matplotlib scatterplot fcn.
-	som = SelfOrganizingMap(3, 13, 10)#, grid_type=hexagonal_grid)
+	som = SelfOrganizingMap(3, 20, 20, grid_type = hexagonal_grid)#, grid_type=hexagonal_grid)
 	som.train_dataset_v01(data)
 	som.preview_3d_data_and_map(data)
 
